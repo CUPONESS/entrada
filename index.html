@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Entrada.pro - Tus Mejores Oportunidades Online</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p6O2Xx1y9eO8sC2Y0b8fE8P5Qj4c2w1lYf1b9b0+1p2Qb2X0d3YV6Y7F2mYq3Z4b" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+/* Reset y variables */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root{
+    --primary-color: #4361ee;
+    --secondary-color: #3a0ca3;
+    --accent-color: #f72585;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --muted: #6c757d;
+    --success: #4cc9f0;
+    --bg-card: #ffffff;
+    --trans-300: 300ms;
+}
+
+/* Dark mode variables (applied via .dark-mode on body) */
+body.dark-mode {
+    --light-color: #0f1720;
+    --bg-card: #121417;
+    --dark-color: #f1f5f9;
+    --muted: #9aa6b2;
+}
+
+/* Base */
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--light-color);
+    color: var(--dark-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container{ max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* Header */
+.header{
+    background: rgb(211, 221, 205);
+    padding: 0.9rem 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    position: sticky; top: 0; z-index: 1000;
+}
+body.dark-mode .header { background: #0b0f13; box-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+
+.header-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+
+/* Logo */
+.logo{ display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; }
+.logo-icon{
+    width:44px; height:44px; border-radius:10px;
+    background: linear-gradient(135deg,var(--primary-color),var(--secondary-color));
+    display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem;
+    box-shadow: 0 6px 18px rgba(67,97,238,0.18);
+}
+.logo-main{ font-weight:800; font-size:1.2rem; letter-spacing:-0.5px; }
+.logo-sub{ font-weight:600; color:var(--primary-color); font-size:0.95rem; margin-top:-2px; }
+
+/* Main menu */
+.main-menu{ flex-grow: 1; display: flex; justify-content: center; } 
+.main-menu ul{ display:flex; gap:20px; list-style:none; align-items:center; }
+.main-menu a{ 
+    color:var(--dark-color); text-decoration:none; font-weight:600; position:relative; padding:6px 2px; 
+    display: flex; align-items: center; gap: 6px; 
+}
+
+/* Style pour les liens de plateformes d'affiliation */
+.affiliate-link-menu a {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+.standard-link-menu a {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.main-menu a::after{
+    content:''; position:absolute; left:0; bottom:-6px; height:3px; width:0;
+    background: linear-gradient(90deg,var(--primary-color),var(--accent-color)); transition: width var(--trans-300) ease;
+}
+.main-menu a:hover::after{ width:100%; }
+
+
+/* Header actions (social + toggles) */
+.header-actions{ display:flex; align-items:center; gap:12px; }
+
+/* NOUVEAU: Conteneur de liens sociaux pour Telegram et Facebook */
+.social-links{ display:flex; gap:8px; align-items:center; }
+.social-link {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--trans-300);
+    font-size: 1.2rem;
+    color: white; /* Couleur par défaut */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: none;
+    text-decoration: none;
+}
+
+/* Telegram spécifique */
+.social-telegram {
+    background: #0088CC; /* Couleur de Telegram */
+}
+.social-telegram:hover {
+    transform: translateY(-2px) scale(2);
+    box-shadow: 0 8px 18px rgba(0, 136, 204, 0.4);
+}
+
+/* Facebook spécifique */
+.social-facebook {
+    background: #4267B2; /* Couleur de Facebook */
+}
+.social-facebook:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 18px rgba(66, 103, 178, 0.4);
+}
+
+/* Dark toggle */
+.dark-toggle{
+    background:none; border:none; cursor:pointer; font-size:1rem; padding:8px; border-radius:8px; color:var(--dark-color);
+}
+.dark-toggle.small{ font-size:0.9rem; padding:6px 10px; border:1px solid rgba(0,0,0,0.06); background:transparent; }
+
+/* Hero */
+.hero{
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white; padding:3.5rem 0; text-align:center; position:relative; overflow:hidden;
+}
+.hero-content{ max-width:760px; margin:0 auto; z-index:1; }
+.hero-title{ font-size:2.6rem; font-weight:800; margin-bottom:10px; line-height:1.05; }
+.hero-subtitle{ font-size:1.05rem; margin-bottom:1.6rem; opacity:0.95; }
+
+/* CTA */
+.cta-button{
+    background:white; color:var(--primary-color); border:none; padding:12px 22px; border-radius:30px; cursor:pointer; font-weight:700;
+    box-shadow:0 8px 20px rgba(0,0,0,0.12); transition: transform var(--trans-300), box-shadow var(--trans-300);
+    display: inline-block; 
+    text-decoration: none;
+}
+.cta-button:hover{ transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,0.18); }
+
+/* Main content layout */
+.main-content{ padding:2.5rem 0 4rem; flex:1; }
+.content-wrapper{ display:grid; grid-template-columns: 1fr 320px; gap:28px; align-items:start; }
+
+/* Section title */
+.section-title{ font-size:1.9rem; margin-bottom:1.2rem; text-align:center; color:var(--dark-color); position:relative; }
+.section-title::after{
+    content:''; display:block; width:70px; height:4px; background:linear-gradient(90deg,var(--primary-color),var(--accent-color));
+    margin:10px auto; border-radius:3px;
+}
+
+/* Grid productos */
+.products-grid{ display:grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
+.product-card{
+    background:var(--bg-card); border-radius:12px; padding:16px; box-shadow:0 8px 20px rgba(0,0,0,0.06);
+    display:flex; flex-direction:column; overflow:hidden; transition: transform var(--trans-300), box-shadow var(--trans-300);
+    position:relative;
+    opacity:0; transform: translateY(12px); transition: opacity 420ms ease, transform 420ms ease;
+}
+.product-card.visible{ opacity:1; transform: none; }
+.product-card:hover{ transform: translateY(-8px); box-shadow:0 18px 45px rgba(0,0,0,0.12); }
+
+.product-image{
+    width:100%; height:180px; border-radius:8px; background:#f3f4f6; display:flex; align-items:center; justify-content:center; overflow:hidden;
+    margin-bottom:12px; transition: transform 360ms ease;
+}
+.product-image img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.product-title{ font-size:1.05rem; font-weight:700; margin-bottom:8px; color:var(--dark-color); }
+.product-description{ color:var(--muted); font-size:0.94rem; margin-bottom:10px; line-height:1.35; flex:1; }
+.product-price{ font-size:1.25rem; font-weight:800; color:var(--accent-color); margin-bottom:10px; }
+
+.buy-button{
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white; border:none; padding:11px 14px; border-radius:24px; cursor:pointer; font-weight:700; width:100%;
+    transition: transform var(--trans-300);
+    display: block; 
+    text-align: center;
+    text-decoration: none;
+}
+.buy-button.small{ padding:8px 12px; border-radius:18px; font-size:0.95rem; width:auto; display:inline-block; }
+.buy-button:hover{ transform:scale(1.02); }
+
+/* Affiliate aside */
+.affiliate-space{ background:var(--bg-card); padding:18px; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.06); position:sticky; top:100px; }
+.banner-content{ text-align:center; color:#fff; }
+.affiliate-banner{ background: linear-gradient(135deg,#f093fb 0%,#f5576c 100%); padding:20px; border-radius:10px; margin-bottom:16px; }
+
+/* Newsletter */
+.newsletter-form{ display:flex; flex-direction:column; gap:10px; }
+.newsletter-form input{
+    padding:10px 12px; border-radius:24px; border:1px solid #e6e9ee; outline:none; font-size:0.95rem;
+}
+.newsletter-form button{ padding:10px 12px; border-radius:24px; border:none; background:var(--primary-color); color:#fff; font-weight:700; cursor:pointer; }
+
+/* Footer */
+.footer{ background:var(--dark-color); color:white; padding:2.5rem 0 1.2rem; margin-top:auto; }
+.footer-content{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:22px; margin-bottom:20px; }
+.footer-section h3{ margin-bottom:8px; }
+.footer-section p{ color:#cbd5e1; }
+.footer-logo{ display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.1rem; }
+.footer-bottom{ text-align:center; border-top:1px solid rgba(255,255,255,0.06); padding-top:14px; color:#cbd5e1; }
+
+/* Contact List */
+.contact-list { list-style: none; padding: 0; }
+.contact-list li { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #cbd5e1; }
+.contact-list li i { color: var(--accent-color); font-size: 0.9rem; }
+
+/* Quick Links */
+.quick-links { list-style: none; padding: 0; }
+.quick-links a { color: #cbd5e1; text-decoration: none; transition: color var(--trans-300); display: block; margin-bottom: 5px; }
+.quick-links a:hover { color: var(--success); }
+
+/* Redes Sociales Footer */
+.social-footer-links { display: flex; gap: 15px; margin-top: 10px; }
+.social-footer-links a { 
+    color: white; 
+    font-size: 1.4rem; 
+    transition: color var(--trans-300), transform var(--trans-300);
+}
+.social-footer-links a:hover { 
+    color: var(--primary-color); 
+    transform: translateY(-2px);
+}
+
+/* Back to top */
+.back-to-top{
+    position:fixed; right:24px; bottom:30px; background:var(--primary-color); color:white; border:none;
+    padding:12px; border-radius:50%; display:none; cursor:pointer; box-shadow:0 8px 24px rgba(67,97,238,0.2);
+    z-index:1200;
+}
+
+/* Small utilities */
+.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* Subtle animation delays for cards */
+.product-card:nth-child(1){ transition-delay:80ms; }
+.product-card:nth-child(2){ transition-delay:140ms; }
+.product-card:nth-child(3){ transition-delay:200ms; }
+.product-card:nth-child(4){ transition-delay:260ms; }
+.product-card:nth-child(5){ transition-delay:320ms; }
+
+/* Responsive */
+@media (max-width: 980px){
+    .content-wrapper{ grid-template-columns: 1fr; }
+    .affiliate-space{ position:static; order:-1; margin-bottom:16px; top:auto; }
+    .main-menu ul{ display: flex; flex-wrap: wrap; justify-content: center; } 
+    .header-inner{ justify-content: space-around; }
+}
+@media (max-width: 480px){
+    .hero-title{ font-size:1.8rem; }
+    .product-image{ height:150px; }
+    .header-inner{ gap:8px; }
+    .main-menu ul { gap: 10px; }
+}
+
+/* Focus styles (accessibilidad) */
+a:focus, button:focus, input:focus{ outline: 3px solid rgba(67,97,238,0.15); outline-offset:2px; border-radius:8px; }
+    </style>
+</head>
+<body>
+    <header class="header" id="home">
+        <div class="container header-inner">
+            <div class="logo-section">
+                <a class="logo" href="https://www.entrada.pro">
+                   <div class="logo-icon" aria-hidden="true">
+    <img src="" alt="Logo Entrada" class="logo-img-new">
+</div>
+                    <div class="logo-text">
+                        <span class="logo-main">Entrada</span>
+                     
+                    </div>
+                </a>
+            </div>
+
+            <nav class="main-menu" aria-label="Menú principal de navegación y ofertas">
+                <ul>
+                    <li class="affiliate-link-menu"><a href="https://es.aliexpress.com" target="_blank" rel="noopener"><i class="fas fa-shopping-cart"></i> AliExpress</a></li>
+                    <li class="affiliate-link-menu"><a href="https://www.temu.com" target="_blank" rel="noopener"><i class="fas fa-box-open"></i> Temu</a></li>
+                    <li class="affiliate-link-menu"><a href="https://amazon.es" target="_blank" rel="noopener"><i class="fab fa-amazon"></i> Amazon</a></li>
+                    <li class="affiliate-link-menu"><a href="https://t.me/ayemarket" target="_blank" rel="noopener"><i class="fas fa-shopping-cart"></i> Telegram</a></li>
+                    <li class="affiliate-link-menu"><a href="https://www.facebook.com" target="_blank" rel="noopener"><i class="fas fa-box-open"></i> facebook</a></li>
+                   
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <nav class="social-links" aria-label="Canales sociales y acciones">
+                    
+                    </a>
+                </nav>
+                <button id="darkModeToggle" class="dark-toggle" aria-label="Alternar modo oscuro">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" aria-labelledby="heroTitle">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title" id="heroTitle">Descubre las Mejores Ofertas</h1>
+                <p class="hero-subtitle">Productos seleccionados con descuentos exclusivos solo para ti</p>
+                <a class="cta-button" href="#products">
+                    Ver Productos <i class="fas fa-arrow-down"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="content-wrapper">
+
+                <section class="products-section" id="products" aria-labelledby="prodTitle">
+                    <h2 class="section-title" id="prodTitle">Productos Destacados</h2>
+                    <div class="products-grid" id="productsGrid">
+                        </div>
+                </section>
+
+                <aside class="affiliate-space" aria-labelledby="offersTitle">
+                    <h3 id="offersTitle">Ofertas Especiales</h3>
+
+                    <div class="affiliate-banner" id="affiliateBanner">
+                        <div class="banner-content">
+                            <h4>¡Ofertas Exclusivas!</h4>
+                            <p>Hasta 50% de descuento en artículos seleccionados</p>
+                            <a class="buy-button small" href="#products">Ver Ofertas</a>
+                        </div>
+                    </div>
+
+                    <div class="newsletter">
+                        <h4>Recibe Ofertas</h4>
+                        <p>Suscríbete para recibir las mejores ofertas en tu correo</p>
+                        <form class="newsletter-form" id="newsletterForm">
+                            <input type="email" id="newsletterEmail" placeholder="Tu correo electrónico" required>
+                            <button type="submit" aria-label="Suscribirse">Suscribirse</button>
+                        </form>
+                    </div>
+                </aside>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-bolt"></i><span>Entrada.pro</span>
+                    </div>
+                    <p>Tu plataforma confiable para descubrir las mejores ofertas y productos en línea.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contáctanos</h3>
+                    <ul class="contact-list">
+                        <li><i class="fas fa-envelope"></i> </li>
+                        <li><i class="fas fa-phone"></i></li>
+                        <li><i class="fas fa-map-marker-alt"></i> </li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="quick-links">
+                        <li><a href="#home">Inicio</a></li>
+                        <li><a href="#products">Productos</a></li>
+                        <li><a href="#about">Sobre Nosotros</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                    
+                    <h3>Síguenos</h3>
+                    <div class="social-footer-links">
+                        <a href="https://www.temu.com" target="_blank" rel="noopener" aria-label="Temu"><i class="fas fa-box-open"></i></a> 
+                        <a href="https://facebook.com/entrada-pro" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="https://instagram.com/entrada-pro" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+
+                    <div class="footer-toggle">
+                        <button id="darkModeToggleFooter" class="dark-toggle small" aria-label="Alternar modo oscuro">
+                            <i class="fas fa-moon"></i> Modo Oscuro
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="year"></span> Entrada.pro. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="back-to-top" aria-label="Subir al inicio">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+/* script.js - Interactividad para Entrada.pro (modo oscuro, productos, scroll reveal, newsletter, back-to-top) */
+
+(() => {
+  // --- Helpers ---
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+  // --- Persistencia modo oscuro ---
+  const body = document.body;
+  const darkToggle = $('#darkModeToggle');
+  const darkToggleFooter = $('#darkModeToggleFooter');
+
+  function setDarkMode(enabled, save = true) {
+    if (enabled) body.classList.add('dark-mode');
+    else body.classList.remove('dark-mode');
+    if (save) localStorage.setItem('entrada_dark', enabled ? '1' : '0');
+  }
+  const saved = localStorage.getItem('entrada_dark');
+  setDarkMode(saved === '1', false);
+
+  [darkToggle, darkToggleFooter].forEach(btn => {
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const enabled = !body.classList.contains('dark-mode');
+      setDarkMode(enabled);
+    });
+  });
+
+  // --- Back to top button ---
+  const backToTop = $('#backToTop');
+  window.addEventListener('scroll', () => {
+    if (!backToTop) return;
+    window.requestAnimationFrame(() => {
+        backToTop.style.display = window.scrollY > 280 ? 'block' : 'none';
+    });
+  });
+  if (backToTop) backToTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+  // --- Fecha año en footer ---
+  const yearEl = $('#year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // --- ⚙️ Paramètres d'API et d'Affiliation (Nouveauté) ---
+  const API_CONFIG = {
+      API_ENDPOINT: "https://your-secure-backend.com/api/v1/products",
+      AFFILIATE_KEY: "ENTRADA-PRO-XYZ123", 
+      DEFAULT_PARAMS: "platform=all&sort=discount_rate&limit=5",
+      BASE_AFFILIATE_URL: "https://tu-affiliate-link.com/product/"
+  };
+
+  // --- Produits de exemple ---
+  const sampleProducts = [
+    {
+      id: 1,
+      title: "Auriculares Bluetooth X200",
+      description: "Sonido nítido, cancelación de ruido y batería hasta 30h.",
+      price: "€24.99",
+      img: "https://picsum.photos/seed/headphones/600/400",
+      platform: "AliExpress",
+      affiliateUrl: `${API_CONFIG.BASE_AFFILIATE_URL}1?aff_id=${API_CONFIG.AFFILIATE_KEY}` 
+    },
+    {
+      id: 2,
+      title: "Smartwatch Sport 2",
+      description: "Monitor de pulso, pasos, y notificaciones inteligentes.",
+      price: "€39.50",
+      img: "https://picsum.photos/seed/watch/600/400",
+      platform: "Amazon",
+      affiliateUrl: `${API_CONFIG.BASE_AFFILIATE_URL}2?aff_id=${API_CONFIG.AFFILIATE_KEY}`
+    },
+    {
+      id: 3,
+      title: "Cargador Rápido 65W",
+      description: "Carga rápida para portátil y mobiles USB-C.",
+      price: "€18.00",
+      img: "https://picsum.photos/seed/charger/600/400",
+      platform: "Temu",
+      affiliateUrl: `${API_CONFIG.BASE_AFFILIATE_URL}3?aff_id=${API_CONFIG.AFFILIATE_KEY}`
+    },
+    {
+      id: 4,
+      title: "Cámara deportiva 4K",
+      description: "Grabación 4K, resistente al agua y estabilización de imagen.",
+      price: "€59.99",
+      img: "https://picsum.photos/seed/cam/600/400",
+      platform: "AliExpress",
+      affiliateUrl: `${API_CONFIG.BASE_AFFILIATE_URL}4?aff_id=${API_CONFIG.AFFILIATE_KEY}`
+    },
+    {
+      id: 5,
+      title: "Mini Robot Aspirador",
+      description: "Compacto, silencioso y con programación inteligente.",
+      price: "€79.90",
+      img: "https://picsum.photos/seed/robot/600/400",
+      platform: "Temu",
+      affiliateUrl: `${API_CONFIG.BASE_AFFILIATE_URL}5?aff_id=${API_CONFIG.AFFILIATE_KEY}`
+    }
+  ];
+
+  // --- Render products ---
+  const productsGrid = $('#productsGrid');
+  function renderProducts(products) {
+    if (!productsGrid) return;
+    productsGrid.innerHTML = '';
+    products.forEach(p => {
+      const card = document.createElement('article');
+      card.className = 'product-card';
+      card.setAttribute('role', 'article');
+      card.innerHTML = `
+        <div class="product-image" aria-hidden="true">
+          <img src="${p.img}" alt="${escapeHtml(p.title)}" loading="lazy">
+        </div>
+        <h3 class="product-title">${escapeHtml(p.title)}</h3>
+        <p class="product-description">${escapeHtml(p.description)}</p>
+        <div class="product-price">${escapeHtml(p.price)}</div>
+        <a class="buy-button" href="${p.affiliateUrl}" target="_blank" rel="noopener" aria-label="Comprar ${escapeHtml(p.title)} en ${p.platform}">Comprar Ahora</a>
+      `;
+      productsGrid.appendChild(card);
+    });
+
+    // Añadir listeners para efectos hover
+    $$('.product-card').forEach(card => {
+      const img = card.querySelector('.product-image');
+      card.addEventListener('mouseenter', () => img.style.transform = 'scale(1.03)');
+      card.addEventListener('mouseleave', () => img.style.transform = 'scale(1)');
+    });
+  }
+
+  // Escape simple
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+  }
+  
+  // --- Fonction de chargement de produits simulee ---
+  function fetchProducts() {
+      // En production, vous utiliseriez l'appel 'fetch' ici.
+      renderProducts(sampleProducts);
+  }
+
+  // Initialiser
+  fetchProducts();
+
+  // --- Scroll reveal sutil (IntersectionObserver) ---
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(ent => {
+      if (ent.isIntersecting) {
+        ent.target.classList.add('visible');
+        io.unobserve(ent.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  // Observar tarjetas y secciones
+  document.querySelectorAll('.product-card, .affiliate-space, .footer-section, .hero-content')
+    .forEach(el => io.observe(el));
+
+  // --- Newsletter (ejemplo) ---
+  const newsletterForm = $('#newsletterForm');
+  if (newsletterForm){
+    newsletterForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = $('#newsletterEmail').value.trim();
+      if (!email || !email.includes('@')) {
+        alert('Introduce un correo válido.');
+        return;
+      }
+      alert('Gracias, ' + email + ' ha sido suscrito (demo).');
+      newsletterForm.reset();
+    });
+  }
+
+  // --- Accessibility: smooth anchors (delegation para enlaces internos) ---
+  document.addEventListener('click', function(e){
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (href === '#' || href === '#0') return;
+    const target = document.querySelector(href);
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  });
+
+})();
+
+    </script>
+</body>
+</html>
