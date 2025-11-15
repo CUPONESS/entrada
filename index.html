@@ -65,30 +65,64 @@ body.dark-mode .header { background: #0b0f13; box-shadow: 0 2px 12px rgba(0,0,0,
 .logo-main{ font-weight:800; font-size:1.2rem; letter-spacing:-0.5px; }
 .logo-sub{ font-weight:600; color:var(--primary-color); font-size:0.95rem; margin-top:-2px; }
 
-/* Main menu */
+/* Main menu - MODIFIÉ */
 .main-menu{ flex-grow: 1; display: flex; justify-content: center; } 
-.main-menu ul{ display:flex; gap:20px; list-style:none; align-items:center; }
+.main-menu ul{ display:flex; gap:28px; list-style:none; align-items:center; flex-wrap: wrap; }
 .main-menu a{ 
-    color:var(--dark-color); text-decoration:none; font-weight:600; position:relative; padding:6px 2px; 
-    display: flex; align-items: center; gap: 6px; 
+    color:var(--dark-color); text-decoration:none; font-weight:600; position:relative; padding:10px 8px; 
+    display: flex; align-items: center; gap: 10px; 
+    border-radius: 8px;
+    transition: all var(--trans-300);
+    background: rgba(255,255,255,0.1);
+    min-width: 140px;
+    justify-content: flex-start;
 }
 
-/* Style pour les liens de plateformes d'affiliation */
+/* Style pour les liens de plateformes d'affiliation - MODIFIÉ */
 .affiliate-link-menu a {
-    color: var(--primary-color);
+    color: var(--dark-color);
     font-weight: 700;
     font-size: 0.95rem;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.7);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-.standard-link-menu a {
-    font-weight: 600;
+body.dark-mode .affiliate-link-menu a {
+    background: rgba(255,255,255,0.1);
     color: var(--dark-color);
 }
+
+/* Logos des plateformes - NOUVEAU */
+.platform-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+/* Couleurs spécifiques pour chaque plateforme */
+.aliExpress-logo { background: #ff4747; }
+.temu-logo { background: #e41e27; }
+.amazon-logo { background: #ff9900; }
+.telegram-logo { background: #0088cc; }
+.facebook-logo { background: #4267b2; }
 
 .main-menu a::after{
     content:''; position:absolute; left:0; bottom:-6px; height:3px; width:0;
     background: linear-gradient(90deg,var(--primary-color),var(--accent-color)); transition: width var(--trans-300) ease;
 }
 .main-menu a:hover::after{ width:100%; }
+
+/* Effet hover amélioré */
+.main-menu a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
 
 
 /* Header actions (social + toggles) */
@@ -116,7 +150,7 @@ body.dark-mode .header { background: #0b0f13; box-shadow: 0 2px 12px rgba(0,0,0,
     background: #0088CC; /* Couleur de Telegram */
 }
 .social-telegram:hover {
-    transform: translateY(-2px) scale(2);
+    transform: translateY(-2px) scale(1.05);
     box-shadow: 0 8px 18px rgba(0, 136, 204, 0.4);
 }
 
@@ -259,14 +293,34 @@ body.dark-mode .header { background: #0b0f13; box-shadow: 0 2px 12px rgba(0,0,0,
 @media (max-width: 980px){
     .content-wrapper{ grid-template-columns: 1fr; }
     .affiliate-space{ position:static; order:-1; margin-bottom:16px; top:auto; }
-    .main-menu ul{ display: flex; flex-wrap: wrap; justify-content: center; } 
+    .main-menu ul{ display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; } 
     .header-inner{ justify-content: space-around; }
+    .main-menu a { min-width: 130px; }
+}
+@media (max-width: 768px){
+    .main-menu ul { gap: 10px; }
+    .main-menu a { 
+        min-width: 120px; 
+        padding: 10px 8px;
+        font-size: 0.9rem;
+    }
+    .platform-logo {
+        width: 24px;
+        height: 24px;
+        font-size: 0.9rem;
+    }
 }
 @media (max-width: 480px){
     .hero-title{ font-size:1.8rem; }
     .product-image{ height:150px; }
     .header-inner{ gap:8px; }
-    .main-menu ul { gap: 10px; }
+    .main-menu ul { gap: 8px; }
+    .main-menu a { 
+        min-width: 110px; 
+        padding: 8px 6px;
+        font-size: 0.85rem;
+        gap: 6px;
+    }
 }
 
 /* Focus styles (accessibilidad) */
@@ -290,19 +344,52 @@ a:focus, button:focus, input:focus{ outline: 3px solid rgba(67,97,238,0.15); out
 
             <nav class="main-menu" aria-label="Menú principal de navegación y ofertas">
                 <ul>
-                    <li class="affiliate-link-menu"><a href="https://es.aliexpress.com" target="_blank" rel="noopener"><i class="fas fa-shopping-cart"></i> AliExpress</a></li>
-                    <li class="affiliate-link-menu"><a href="https://www.temu.com" target="_blank" rel="noopener"><i class="fas fa-box-open"></i> Temu</a></li>
-                    <li class="affiliate-link-menu"><a href="https://amazon.es" target="_blank" rel="noopener"><i class="fab fa-amazon"></i> Amazon</a></li>
-                    <li class="affiliate-link-menu"><a href="https://t.me/ayemarket" target="_blank" rel="noopener"><i class="fas fa-shopping-cart"></i> Telegram</a></li>
-                    <li class="affiliate-link-menu"><a href="https://www.facebook.com" target="_blank" rel="noopener"><i class="fas fa-box-open"></i> facebook</a></li>
-                   
+                    <li class="affiliate-link-menu">
+                        <a href="https://es.aliexpress.com" target="_blank" rel="noopener">
+                            <div class="platform-logo aliExpress-logo">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            AliExpress
+                        </a>
+                    </li>
+                    <li class="affiliate-link-menu">
+                        <a href="https://www.temu.com" target="_blank" rel="noopener">
+                            <div class="platform-logo temu-logo">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                            Temu
+                        </a>
+                    </li>
+                    <li class="affiliate-link-menu">
+                        <a href="https://amazon.es" target="_blank" rel="noopener">
+                            <div class="platform-logo amazon-logo">
+                                <i class="fab fa-amazon"></i>
+                            </div>
+                            Amazon
+                        </a>
+                    </li>
+                    <li class="affiliate-link-menu">
+                        <a href="https://t.me/ayemarket" target="_blank" rel="noopener">
+                            <div class="platform-logo telegram-logo">
+                                <i class="fab fa-telegram"></i>
+                            </div>
+                            Telegram
+                        </a>
+                    </li>
+                    <li class="affiliate-link-menu">
+                        <a href="https://www.facebook.com" target="_blank" rel="noopener">
+                            <div class="platform-logo facebook-logo">
+                                <i class="fab fa-facebook"></i>
+                            </div>
+                            Facebook
+                        </a>
+                    </li>
                 </ul>
             </nav>
 
             <div class="header-actions">
                 <nav class="social-links" aria-label="Canales sociales y acciones">
-                    
-                    </a>
+                    <!-- Les boutons sociaux peuvent être ajoutés ici si nécessaire -->
                 </nav>
                 <button id="darkModeToggle" class="dark-toggle" aria-label="Alternar modo oscuro">
                     <i class="fas fa-moon"></i>
@@ -601,4 +688,3 @@ a:focus, button:focus, input:focus{ outline: 3px solid rgba(67,97,238,0.15); out
     </script>
 </body>
 </html>
-
