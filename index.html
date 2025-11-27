@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Entrada – Ofertas Exclusivas</title>
+    <title>AI Assistant Offers – Ofertas Exclusivas</title>
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -255,6 +255,24 @@ body.dark-mode .header{
     display:none;
     cursor:pointer;
 }
+
+/* Product badge */
+.product-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--accent);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Product card container */
+.product-card-container {
+    position: relative;
+}
     </style>
 </head>
 
@@ -266,9 +284,9 @@ body.dark-mode .header{
         <!-- LOGO -->
         <a href="#" class="logo">
             <div class="logo-icon">
-                <img src="https://github.com/CUPONESS/entrada/blob/bad60eaba07ee68c0cfdccdd7051c798b38d96ef/logo.pnj.png" alt="Entrada Logo">
+                <img src="https://raw.githubusercontent.com/CUPONESS/entrada/bad60eaba07ee68c0cfdccdd7051c798b38d96ef/logo.pnj.png" alt="AI Assistant Offers Logo">
             </div>
-            <span class="logo-main">Entrada</span>
+            <span class="logo-main">AI Assistant Offers</span>
         </a>
 
         <!-- MENU -->
@@ -287,12 +305,12 @@ body.dark-mode .header{
 
 <!-- HERO -->
 <section class="hero">
-    <h1 class="hero-title">Ofertas Inteligentes Cada Día</h1>
-    <p class="hero-subtitle">Los mejores descuentos de AliExpress, Temu y Amazon.</p>
+    <h1 class="hero-title">Dispositivos AI Assistant en Oferta</h1>
+    <p class="hero-subtitle">Los mejores asistentes de inteligencia artificial para tu hogar y trabajo.</p>
 </section>
 
 <div class="container">
-    <h2 class="section-title">Productos Destacados</h2>
+    <h2 class="section-title">Productos AI Assistant</h2>
     <div id="productsGrid" class="products-grid">
         <div class="loading">Cargando productos...</div>
     </div>
@@ -302,29 +320,84 @@ body.dark-mode .header{
 <footer class="footer">
     <div class="container footer-content">
         <div>
-            <h3>Entrada.pro</h3>
-            <p>Encuentra las mejores ofertas de las plataformas más populares.</p>
+            <h3>AI Assistant Offers</h3>
+            <p>Encuentra los mejores dispositivos de inteligencia artificial.</p>
         </div>
 
         <div>
             <h3>Contacto</h3>
-            <p>Email: soporte@entrada.pro</p>
+            <p>Email: soporte@aiassistantoffers.com</p>
         </div>
     </div>
 
     <div class="footer-bottom">
-        © <span id="year"></span> Entrada.pro – Todos los derechos reservados.
+        © <span id="year"></span> AI Assistant Offers – Todos los derechos reservados.
     </div>
 </footer>
 
 <button id="backToTop" class="back-to-top"><i class="fas fa-arrow-up"></i></button>
 
 <script>
+// Products data extracted from your file
+const aiAssistantProducts = [
+    {
+        title: "Robot Intelligent Companion Toy",
+        description: "Juguete compañero inteligente con reconocimiento automático de voz y comunicación emocional para niños y adultos",
+        price: "$719.16",
+        originalPrice: "$790.28",
+        img: "https://ae-pic-a1.aliexpress-media.com/kf/S622f549c976f47a6a64112ac06e71bc2N.jpg",
+        url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4otVYkFASy0g3VZSLCDRBheab5DVHshxTA3NrQasXKf6Zka4bUQ2roIFL8Gh9V6XWX0WsShRK13bQFgG3yfWh2cEm2TxX8YuCMC9lNjRPdw97qjMS5rit6OhLtHvp0V8uYEQIEkvRuPqmtHu66EChzGVMuGb3WckTngchJ7bjMWZwYVhdSkICSb4XLsOpjxIQDMaAmT0BQQOWwubVnlWauC371OnOncyDH3nUaeJ8cykhCbnOKqwYHye6J6BbTV1C0BFUskelBqPvBDuRFNSQLToYltXzqBVoYg9PrYJGV4lVbCDKA2uRSD0LhdecXpvaTPd5BNkXrksTAc6eNQ7SLZK5AGaCJ2JJI6Sv8lXPl3dJHAjZcIWqgIMefKDC3aY9keZg5DzNM938K4fK2LvVFbEcsmMjk0KnT9U2aBTSXW88wqPzeiO8E5Se9w8nPRHXKPET1f53Ydt5gE0PTY8GuKNifyoN17NLJwtJjTGTIRmxXiyFn5gk1HC1MzBSCm5fJ2NGjHOIW8vYKCzrz0Kuv2mQ3wo0PzPIsNQ4KdjrFabKt64hHgKHg3f2s9nHBQybV0NF3ZLpnjQTOpBKVvAbaNiPUw6MWeo2LJzbmTrHXqEqV7EBwOJbPZ3D0v4odfhWTufwLXumAFRSMZyHcANigm2TRlUVWOmAKNXJMZ0UrN5z0W8fyy98lIJCBKAxAHFnNoUSShLplVGfF",
+        rating: 4.8,
+        orders: 12500
+    },
+    {
+        title: "VORMOR M5 AI Voice Recorder",
+        description: "Grabadora de voz inteligente inalámbrica con traducción de 138 idiomas, portátil y digital",
+        price: "$142.84",
+        originalPrice: "$142.84",
+        img: "https://ae-pic-a1.aliexpress-media.com/kf/S1395d64457084939bd29477adff68b6fm.jpg",
+        url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4EfhsODGTGPhfsck1R3ydeOTzpQFheuf623tnGjOBWWNPiFR1a3ewy8l6a2I5MAUDKBH3fpHyQfWqDI0F2cueVnmKpWYY4O8JXShkBvgimxwFte0KAX0BeYjerVBnAADG8bOsp9Q4iOYJrq8Ryxew3Wl4RalEHfEoIv97DdXzlCp6g7Mvkz7ELJ5S0hMfNJOgfzB1FNaOk2ZJMNZ3apkS2YdcqZXWak9oMvx1hBpDNN3qQjTqOrzmFHL8CbdLv3kCKmwq1NheSbRXgF2r8Ik2Uv7Oa4E8Uw2PBbT824WjKcqWGtCbP0W7zERSPfmLmCnPKVDZ0cezAcZoyzIfjrUaNkcBeS9ucmq4aqqJPrLUrj3a4PUTxuntljfNF90R6Bn0h3yjKzRm93An5TWo7gyBuNVradX03pwkOOwDrTYhTvOYkLAtUNnnWrJd5fPJKdt3Z2jcR8vRZw8OupriWghIgdj7XvyfVjuai05AVETcBk0TfyfJmwl5g6OOVFuCPQvfamAIPSd3qZyIigGHHKy3HT41Yr9lbdtwNURvlObRkJhg8PJh1fOL319aPJoIP5Qkd3xYpFvYfMQbgsoOAJSOfnUafOnslaZioOI2U718NzP6W3vC094KP0Klxr6f6C9dcpq2XSSWOnftvDkLEBg14cWUUYJ823eLX4asjXaBXgwXHyRx4lVAOIqArEXGo5koahrOx1bnjBMAt",
+        rating: 4.7,
+        orders: 8900
+    },
+    {
+        title: "AI EMO Robot Pets For Kids And Adults",
+        description: "Tu compañero interactivo perfecto en casa o espacio de trabajo, regalos únicos para niñas y niños",
+        price: "$885.81",
+        originalPrice: "$932.43",
+        img: "https://ae-pic-a1.aliexpress-media.com/kf/S41a66ccd1ac244459ce81a2a3c4371fe1.jpg",
+        url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4Eu7czXCQXuKyp0xKgbuxRDmKNBQIQAI557AdWrwgufvX7fnLPVQTRu87vHO8mabEPebCLxaUy4JphE8i491jR2sQghdoQHRKyqsV8DfYUQNGmchoqv6wa7JWTq1AjICeinDMEdOwntFfuLjEOsZXCtGHwUafpq4P4RgRxvNh1fthoeFmPmbnWAvFN72mIkCsebHmTiW5M5HriVffEpmetPqtnDQwS4De0K9epAosABbpCT2CWH5k1PdkyeHlH9aLU650yvSt6JeBH3IlBS4aMzkhsrAAFlUzVpuYQL1dLrg38hJigIfzXVOXo1l5ioxvZTZ5jPQfll44LcgvuzMtTomaCZfU0lILD4OADMqubty1bDBOguBTu5VG0sYxtuenRgXByPjSNPEjstKyx9zrw4sdGHWzzCaUNUxJHcyas90nMQZxr6wsD7g7KCjqxCNyVRDHA8D2d9GvjAMMlCl1iJZBsysMYfIBz2bCecBcpF6GSI1eP4lAYXMJyPh2SOSHcjr8sHjZ57WM9mQK11dqEuQTGhPqf7m44ROZooLpWeHpbux5x3S2Vmu53JkbLe5fDv9ODQ4w1EiWU70j7VfieldsLKcTZKaLj2gGmEmwFQl8UhtE5qC2KpiCS5JgJVfZppEwUzmUYDmtuwcEAZHkxepXHanpD6wFY9ubp4KFULy3UgPDwzUj1rpituxoG5osFzgSjCAkFpkah",
+        rating: 4.6,
+        orders: 6700
+    },
+    {
+        title: "New Arrival D10 Audio Voice Translator",
+        description: "Traductor de 138 idiomas con traducción de fotos sin conexión, pantalla de 3.97 pulgadas",
+        price: "$123.2",
+        originalPrice: "$123.2",
+        img: "https://ae-pic-a1.aliexpress-media.com/kf/S70d693b8de6347c48490f97cbcbf759dY.jpg",
+        url: "https://s.click.aliexpress.com/s/NdpwztbAIgDMmxGbP8fFks7yUFfsHjzlImSYmA68h7xlMRgzueFsRgokQ9f9hcpVKttxtQE2VzIoqkXJXrpOr6uR3zv7mP4CDO9CddoFf4t0QE5DXPy8Pgjhz4irfQSEjEGUmy5yF3A5gJ9h3NYjLMgqIMqa3zcpq5E2BC3W5EbV40Dm9buQxWpZzw1lbX8Zm2kZtNIa4KyDieNjsH7IU6Yv8StELKVvT9r4eFAaXPGhwHsgaDqdNcmY116r3GC2YvsOopeiiZPhJrV0cwgOQDSkW93v7gVKDqPkXyZF1oSWa6wSAOeznMFVlVZbuQRWH4M0KaJl2J4SzCeB8qTh0KvrYAxye3l6qsnb0C8Dwn70KZLoTV6cpl4VvYnKI64sPPoCIhUxMz4RUPoYHZPDJ45yr0lWtY2Uc7lfViqc2nQ1xsgJMKbznf7MVzVS6HDDaFIWjdnSidgFCzeWCuqi7qOLYUDOtkhjMMvtQbliTkjxleCrZ3Gu6nBAnvKUUa2zVAoO4ve1Ugm49mEPqaZCs9Iu00A2i0Td3b1PDMjZGJOAoImGwcUjT3BezJcaTQkEZQ51ce0qxITl25fiQLTPKnK49DR9fdCMIBj38AfZzoc8kA8sLtcF3YvX1vPIUsCD1kWsIxZmH1LT9rtBn8sMiY2PMm4qBCCldpeti1QtYojAso89ectYVYCyFCnPKTMKJnzejU0roWXkCogriE9R6d8rFuoivCvtOvPdFBcuwrx3FNuyhNoMUkcg4ZY5vpMY3V70QbvgFbd2tdOaAGysyGOunOlOUJGPW2mLS0V6g8lyp7fALo1MmgS1a8iOxWNzkki4AjYM6KvI4njYDYuP0N3H3XMYlK1GyvXoRVrKh7ZgTehVCNc6x2sSv8lvs9Imrspmeivs5HbuP4jHB8P51odm9y1gJLHuqddWzqEE6norYO0BCHg0KWbN8OMIqzXkvHFuWhSKk2FPkH13XI4W5xwu1zL2iZ2a4iYfYY99BbiWP",
+        rating: 4.5,
+        orders: 5400
+    },
+    {
+        title: "IFLYTEK 4.0 Real-Time Smart Language Translator",
+        description: "Dispositivo traductor de lenguaje inteligente en tiempo real con calidad de voz premium",
+        price: "$966.65",
+        originalPrice: "$1017.52",
+        img: "https://ae-pic-a1.aliexpress-media.com/kf/S630cb603d87745348670ca92289904eeW.jpg",
+        url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4E94sG70nElEbTZJM6gR7n7eDDMU27kxaohzaB372HeSaZUYiY5w2xhlBT0EpBoB6vRF10BWUtTzVxdzrKkvCd6WYVmDkn8fXcN8iAJ9zuCFMvsaxS7UeyZb2Negb7hIgRkF2LcBCwS9RLBqR202HiYrDG5sJJvgocTSyWbzUD2i9er1dvu5yCNiurj7shrUAyOWnn6djI4dAiy0YOEKQOw42EnAGIbjdR0YhWjtRg0zmHwtElfZgShLTsJDhylYiKnTEilCQ4FBLFXVNywtOzZnVefXVqm5saOAXRU6TMWKlin7t5TG5souhxhgNflahoRGGPvHGO1Kxt6uHgSI3eYiC5SNgmMsmsz556oaLd0lHSdCQ5orw4nXjcp0R0un1ozD27UqPoVejLjSZ3tYdFO0Ry7P4TmIXRf4QQPANL03N7Fp2jQvTHqldD7WUMujpPStgvmCYqeORTYLFCniCXFLSap0IbWjMmd5FU2gundiFCO8FT0Pwzeiqwg17YQIjsIBuBibN20WUwgcqaamRz3QAKnzer2X6ep2i4icqvY0JtHbnanDQZcxvzTV1fGFn7pHiYlk0xThYAT2DHhVVCItZXbvI6I0aWwPZiQiwEItkdygnFIxK7CXVjfsPWxd2WdTFZBpQ4iJXxxGaU18PLkuQSkphUbnfJaeczf1HbVughYw4ZmRVyowShXVARgaEwBUpYkWgLlRKo",
+        rating: 4.8,
+        orders: 11200
+    }
+];
+
 /* Dark Mode */
 const body = document.body;
 const toggle = document.getElementById("darkToggle");
 toggle.addEventListener("click", () => {
     body.classList.toggle("dark-mode");
+    toggle.innerHTML = body.classList.contains("dark-mode") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
 });
 
 /* Year */
@@ -337,123 +410,44 @@ window.addEventListener("scroll", () => {
 });
 back.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
 
-/* Vrais produits AliExpress avec images réelles */
-const realProducts = [
-    {
-        title: "Smartwatch T8 Ultra", 
-        description: "Reloj inteligente con llamadas Bluetooth, monitor cardíaco, presión arterial",
-        price: "€25.99", 
-        originalPrice: "€49.99",
-        img: "https://ae01.alicdn.com/kf/S1b5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a.jpg",
-        url: "https://s.click.aliexpress.com/e/_DmPzZ0p",
-        rating: 4.8,
-        orders: 12500
-    },
-    {
-        title: "Auriculares Bluetooth TWS", 
-        description: "Auriculares inalámbricos con cancelación de ruido, batería 48h",
-        price: "€18.50", 
-        originalPrice: "€35.99",
-        img: "https://ae01.alicdn.com/kf/S2b5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a.jpg",
-        url: "https://s.click.aliexpress.com/e/_DmQbQ0p",
-        rating: 4.7,
-        orders: 8900
-    },
-    {
-        title: "Cámara Deportiva 4K", 
-        description: "Cámara acción WiFi 20MP sumergible, ideal para deportes",
-        price: "€42.99", 
-        originalPrice: "€79.99",
-        img: "https://ae01.alicdn.com/kf/S3b5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a.jpg",
-        url: "https://s.click.aliexpress.com/e/_DlDmZ0p",
-        rating: 4.6,
-        orders: 6700
-    },
-    {
-        title: "Mini Dron con Cámara", 
-        description: "Dron plegable con cámara HD, control por teléfono, modo sin cabeza",
-        price: "€35.99", 
-        originalPrice: "€69.99",
-        img: "https://ae01.alicdn.com/kf/S4b5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a.jpg",
-        url: "https://s.click.aliexpress.com/e/_DkDmZ0p",
-        rating: 4.5,
-        orders: 5400
-    },
-    {
-        title: "Power Bank 30000mAh", 
-        description: "Batería externa carga rápida PD 30W, 3 puertos USB",
-        price: "€28.50", 
-        originalPrice: "€45.99",
-        img: "https://ae01.alicdn.com/kf/S5b5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a.jpg",
-        url: "https://s.click.aliexpress.com/e/_DlQbQ0p",
-        rating: 4.8,
-        orders: 11200
-    },
-    {
-        title: "Tablet Android 10", 
-        description: "Tablet 10 pulgadas 4GB RAM 64GB ROM, dual SIM",
-        price: "€89.99", 
-        originalPrice: "€149.99",
-        img: "https://ae01.alicdn.com/kf/S6b5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a.jpg",
-        url: "https://s.click.aliexpress.com/e/_DmPzZ0p",
-        rating: 4.4,
-        orders: 3200
-    },
-    {
-        title: "Lámpara LED Inteligente", 
-        description: "Bombilla RGB WiFi, control por app, compatible Alexa Google Home",
-        price: "€8.99", 
-        originalPrice: "€15.99",
-        img: "https://ae01.alicdn.com/kf/S7b5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a.jpg",
-        url: "https://s.click.aliexpress.com/e/_DkQbQ0p",
-        rating: 4.7,
-        orders: 15600
-    },
-    {
-        title: "Set Herramientas Eléctricas", 
-        description: "Kit 21V taladro atornillador + 30 accesorios, batería lithium",
-        price: "€55.99", 
-        originalPrice: "€99.99",
-        img: "https://ae01.alicdn.com/kf/S8b5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a.jpg",
-        url: "https://s.click.aliexpress.com/e/_DlDmZ0p",
-        rating: 4.6,
-        orders: 4800
-    }
-];
-
-/* Render Real Products */
+/* Render AI Assistant Products */
 function renderProducts() {
     const grid = document.getElementById("productsGrid");
     
     // Clear loading
     grid.innerHTML = '';
     
-    realProducts.forEach(product => {
-        const discount = Math.round((1 - parseFloat(product.price.replace('€', '')) / parseFloat(product.originalPrice.replace('€', ''))) * 100);
+    aiAssistantProducts.forEach(product => {
+        const discount = product.originalPrice === product.price ? 0 : 
+            Math.round((1 - parseFloat(product.price.replace('$', '')) / parseFloat(product.originalPrice.replace('$', ''))) * 100);
         
         grid.innerHTML += `
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="${product.img}" alt="${product.title}" onerror="this.src='https://picsum.photos/seed/${product.title}/600'">
-                </div>
-                <h3 class="product-title">${product.title}</h3>
-                <p class="product-description">${product.description}</p>
-                
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                    <span class="product-price">${product.price}</span>
-                    <span style="text-decoration: line-through; color: var(--muted); font-size: 0.9rem;">${product.originalPrice}</span>
-                    <span style="background: var(--accent); color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.8rem; font-weight: bold;">-${discount}%</span>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <i class="fas fa-star" style="color: #ffc107;"></i>
-                        <span style="font-size: 0.9rem;">${product.rating}</span>
+            <div class="product-card-container">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.img}" alt="${product.title}" onerror="this.src='https://picsum.photos/seed/${product.title}/600'">
                     </div>
-                    <span style="font-size: 0.8rem; color: var(--muted);">${product.orders.toLocaleString()} pedidos</span>
+                    <h3 class="product-title">${product.title}</h3>
+                    <p class="product-description">${product.description}</p>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <span class="product-price">${product.price}</span>
+                        ${product.originalPrice !== product.price ? 
+                            `<span style="text-decoration: line-through; color: var(--muted); font-size: 0.9rem;">${product.originalPrice}</span>
+                             <span style="background: var(--accent); color: white; padding: 2px 6px; border-radius: 8px; font-size: 0.8rem; font-weight: bold;">-${discount}%</span>` 
+                            : ''}
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            <i class="fas fa-star" style="color: #ffc107;"></i>
+                            <span style="font-size: 0.9rem;">${product.rating}</span>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--muted);">${product.orders.toLocaleString()} pedidos</span>
+                    </div>
+                    
+                    <a href="${product.url}" target="_blank" class="buy-button">Ver Oferta</a>
                 </div>
-                
-                <a href="${product.url}" target="_blank" class="buy-button">Ver Oferta</a>
             </div>`;
     });
 }
@@ -464,4 +458,3 @@ document.addEventListener('DOMContentLoaded', renderProducts);
 
 </body>
 </html>
-
