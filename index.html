@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Assistant Offers – Ofertas Exclusivas</title>
+    <title>AI Assistant Offers – Dispositivos Inteligentes</title>
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -74,14 +74,17 @@ body.dark-mode .header{
     color:var(--dark);
 }
 .logo-icon img{
-    width:48px; height:48px;
-    border-radius:12px;
+    display:flex;
+    align-items:center;
+    width:200px; height:100px;
+    border-radius:40px;
     object-fit: contain;
 }
 .logo-main{
     font-size:1.3rem;
-    font-weight:800;
+    font-weight:100;
 }
+
 
 /* ============================================
    MENU
@@ -189,12 +192,15 @@ body.dark-mode .header{
 .product-title{
     font-size:1.1rem;
     font-weight:700;
+    line-height: 1.3;
+    margin-bottom: 8px;
 }
 .product-description{
     color:var(--muted);
     font-size:.95rem;
     margin:8px 0;
     flex:1;
+    line-height: 1.4;
 }
 .product-price{
     font-size:1.3rem;
@@ -211,6 +217,7 @@ body.dark-mode .header{
     font-weight:700;
     text-align:center;
     transition:var(--transition);
+    margin-top: auto;
 }
 .buy-button:hover{
     transform:scale(1.03);
@@ -254,6 +261,7 @@ body.dark-mode .header{
     border-radius:50%;
     display:none;
     cursor:pointer;
+    z-index: 1000;
 }
 
 /* Product badge */
@@ -273,6 +281,56 @@ body.dark-mode .header{
 .product-card-container {
     position: relative;
 }
+
+/* Search and filter */
+.search-container {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    font-size: 1rem;
+}
+
+.filter-select {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+}
+
+/* Results count */
+.results-count {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--muted);
+}
+
+/* Load more button */
+.load-more {
+    display: block;
+    margin: 30px auto;
+    padding: 12px 24px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.load-more:hover {
+    background: var(--secondary);
+    transform: scale(1.05);
+}
     </style>
 </head>
 
@@ -286,7 +344,7 @@ body.dark-mode .header{
             <div class="logo-icon">
                 <img src="https://raw.githubusercontent.com/CUPONESS/entrada/bad60eaba07ee68c0cfdccdd7051c798b38d96ef/logo.pnj.png" alt="AI Assistant Offers Logo">
             </div>
-            <span class="logo-main">AI Assistant Offers</span>
+            <span class="logo-main"></span>
         </a>
 
         <!-- MENU -->
@@ -311,9 +369,27 @@ body.dark-mode .header{
 
 <div class="container">
     <h2 class="section-title">Productos AI Assistant</h2>
+    
+    <!-- Search and Filter -->
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos...">
+        <select id="priceFilter" class="filter-select">
+            <option value="all">Todos los precios</option>
+            <option value="0-50">$0 - $50</option>
+            <option value="50-100">$50 - $100</option>
+            <option value="100-200">$100 - $200</option>
+            <option value="200-500">$200 - $500</option>
+            <option value="500+">$500+</option>
+        </select>
+    </div>
+    
+    <div id="resultsCount" class="results-count"></div>
+    
     <div id="productsGrid" class="products-grid">
         <div class="loading">Cargando productos...</div>
     </div>
+    
+    <button id="loadMore" class="load-more" style="display:none;">Cargar más productos</button>
 </div>
 
 <!-- FOOTER -->
@@ -338,8 +414,8 @@ body.dark-mode .header{
 <button id="backToTop" class="back-to-top"><i class="fas fa-arrow-up"></i></button>
 
 <script>
-// Products data extracted from your file
-const aiAssistantProducts = [
+// All AI Assistant Products extracted from the file
+const allAIProducts = [
     {
         title: "Robot Intelligent Companion Toy",
         description: "Juguete compañero inteligente con reconocimiento automático de voz y comunicación emocional para niños y adultos",
@@ -347,6 +423,7 @@ const aiAssistantProducts = [
         originalPrice: "$790.28",
         img: "https://ae-pic-a1.aliexpress-media.com/kf/S622f549c976f47a6a64112ac06e71bc2N.jpg",
         url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4otVYkFASy0g3VZSLCDRBheab5DVHshxTA3NrQasXKf6Zka4bUQ2roIFL8Gh9V6XWX0WsShRK13bQFgG3yfWh2cEm2TxX8YuCMC9lNjRPdw97qjMS5rit6OhLtHvp0V8uYEQIEkvRuPqmtHu66EChzGVMuGb3WckTngchJ7bjMWZwYVhdSkICSb4XLsOpjxIQDMaAmT0BQQOWwubVnlWauC371OnOncyDH3nUaeJ8cykhCbnOKqwYHye6J6BbTV1C0BFUskelBqPvBDuRFNSQLToYltXzqBVoYg9PrYJGV4lVbCDKA2uRSD0LhdecXpvaTPd5BNkXrksTAc6eNQ7SLZK5AGaCJ2JJI6Sv8lXPl3dJHAjZcIWqgIMefKDC3aY9keZg5DzNM938K4fK2LvVFbEcsmMjk0KnT9U2aBTSXW88wqPzeiO8E5Se9w8nPRHXKPET1f53Ydt5gE0PTY8GuKNifyoN17NLJwtJjTGTIRmxXiyFn5gk1HC1MzBSCm5fJ2NGjHOIW8vYKCzrz0Kuv2mQ3wo0PzPIsNQ4KdjrFabKt64hHgKHg3f2s9nHBQybV0NF3ZLpnjQTOpBKVvAbaNiPUw6MWeo2LJzbmTrHXqEqV7EBwOJbPZ3D0v4odfhWTufwLXumAFRSMZyHcANigm2TRlUVWOmAKNXJMZ0UrN5z0W8fyy98lIJCBKAxAHFnNoUSShLplVGfF",
+        category: "robot",
         rating: 4.8,
         orders: 12500
     },
@@ -357,6 +434,7 @@ const aiAssistantProducts = [
         originalPrice: "$142.84",
         img: "https://ae-pic-a1.aliexpress-media.com/kf/S1395d64457084939bd29477adff68b6fm.jpg",
         url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4EfhsODGTGPhfsck1R3ydeOTzpQFheuf623tnGjOBWWNPiFR1a3ewy8l6a2I5MAUDKBH3fpHyQfWqDI0F2cueVnmKpWYY4O8JXShkBvgimxwFte0KAX0BeYjerVBnAADG8bOsp9Q4iOYJrq8Ryxew3Wl4RalEHfEoIv97DdXzlCp6g7Mvkz7ELJ5S0hMfNJOgfzB1FNaOk2ZJMNZ3apkS2YdcqZXWak9oMvx1hBpDNN3qQjTqOrzmFHL8CbdLv3kCKmwq1NheSbRXgF2r8Ik2Uv7Oa4E8Uw2PBbT824WjKcqWGtCbP0W7zERSPfmLmCnPKVDZ0cezAcZoyzIfjrUaNkcBeS9ucmq4aqqJPrLUrj3a4PUTxuntljfNF90R6Bn0h3yjKzRm93An5TWo7gyBuNVradX03pwkOOwDrTYhTvOYkLAtUNnnWrJd5fPJKdt3Z2jcR8vRZw8OupriWghIgdj7XvyfVjuai05AVETcBk0TfyfJmwl5g6OOVFuCPQvfamAIPSd3qZyIigGHHKy3HT41Yr9lbdtwNURvlObRkJhg8PJh1fOL319aPJoIP5Qkd3xYpFvYfMQbgsoOAJSOfnUafOnslaZioOI2U718NzP6W3vC094KP0Klxr6f6C9dcpq2XSSWOnftvDkLEBg14cWUUYJ823eLX4asjXaBXgwXHyRx4lVAOIqArEXGo5koahrOx1bnjBMAt",
+        category: "voice-recorder",
         rating: 4.7,
         orders: 8900
     },
@@ -367,6 +445,7 @@ const aiAssistantProducts = [
         originalPrice: "$932.43",
         img: "https://ae-pic-a1.aliexpress-media.com/kf/S41a66ccd1ac244459ce81a2a3c4371fe1.jpg",
         url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4Eu7czXCQXuKyp0xKgbuxRDmKNBQIQAI557AdWrwgufvX7fnLPVQTRu87vHO8mabEPebCLxaUy4JphE8i491jR2sQghdoQHRKyqsV8DfYUQNGmchoqv6wa7JWTq1AjICeinDMEdOwntFfuLjEOsZXCtGHwUafpq4P4RgRxvNh1fthoeFmPmbnWAvFN72mIkCsebHmTiW5M5HriVffEpmetPqtnDQwS4De0K9epAosABbpCT2CWH5k1PdkyeHlH9aLU650yvSt6JeBH3IlBS4aMzkhsrAAFlUzVpuYQL1dLrg38hJigIfzXVOXo1l5ioxvZTZ5jPQfll44LcgvuzMtTomaCZfU0lILD4OADMqubty1bDBOguBTu5VG0sYxtuenRgXByPjSNPEjstKyx9zrw4sdGHWzzCaUNUxJHcyas90nMQZxr6wsD7g7KCjqxCNyVRDHA8D2d9GvjAMMlCl1iJZBsysMYfIBz2bCecBcpF6GSI1eP4lAYXMJyPh2SOSHcjr8sHjZ57WM9mQK11dqEuQTGhPqf7m44ROZooLpWeHpbux5x3S2Vmu53JkbLe5fDv9ODQ4w1EiWU70j7VfieldsLKcTZKaLj2gGmEmwFQl8UhtE5qC2KpiCS5JgJVfZppEwUzmUYDmtuwcEAZHkxepXHanpD6wFY9ubp4KFULy3UgPDwzUj1rpituxoG5osFzgSjCAkFpkah",
+        category: "robot",
         rating: 4.6,
         orders: 6700
     },
@@ -377,6 +456,7 @@ const aiAssistantProducts = [
         originalPrice: "$123.2",
         img: "https://ae-pic-a1.aliexpress-media.com/kf/S70d693b8de6347c48490f97cbcbf759dY.jpg",
         url: "https://s.click.aliexpress.com/s/NdpwztbAIgDMmxGbP8fFks7yUFfsHjzlImSYmA68h7xlMRgzueFsRgokQ9f9hcpVKttxtQE2VzIoqkXJXrpOr6uR3zv7mP4CDO9CddoFf4t0QE5DXPy8Pgjhz4irfQSEjEGUmy5yF3A5gJ9h3NYjLMgqIMqa3zcpq5E2BC3W5EbV40Dm9buQxWpZzw1lbX8Zm2kZtNIa4KyDieNjsH7IU6Yv8StELKVvT9r4eFAaXPGhwHsgaDqdNcmY116r3GC2YvsOopeiiZPhJrV0cwgOQDSkW93v7gVKDqPkXyZF1oSWa6wSAOeznMFVlVZbuQRWH4M0KaJl2J4SzCeB8qTh0KvrYAxye3l6qsnb0C8Dwn70KZLoTV6cpl4VvYnKI64sPPoCIhUxMz4RUPoYHZPDJ45yr0lWtY2Uc7lfViqc2nQ1xsgJMKbznf7MVzVS6HDDaFIWjdnSidgFCzeWCuqi7qOLYUDOtkhjMMvtQbliTkjxleCrZ3Gu6nBAnvKUUa2zVAoO4ve1Ugm49mEPqaZCs9Iu00A2i0Td3b1PDMjZGJOAoImGwcUjT3BezJcaTQkEZQ51ce0qxITl25fiQLTPKnK49DR9fdCMIBj38AfZzoc8kA8sLtcF3YvX1vPIUsCD1kWsIxZmH1LT9rtBn8sMiY2PMm4qBCCldpeti1QtYojAso89ectYVYCyFCnPKTMKJnzejU0roWXkCogriE9R6d8rFuoivCvtOvPdFBcuwrx3FNuyhNoMUkcg4ZY5vpMY3V70QbvgFbd2tdOaAGysyGOunOlOUJGPW2mLS0V6g8lyp7fALo1MmgS1a8iOxWNzkki4AjYM6KvI4njYDYuP0N3H3XMYlK1GyvXoRVrKh7ZgTehVCNc6x2sSv8lvs9Imrspmeivs5HbuP4jHB8P51odm9y1gJLHuqddWzqEE6norYO0BCHg0KWbN8OMIqzXkvHFuWhSKk2FPkH13XI4W5xwu1zL2iZ2a4iYfYY99BbiWP",
+        category: "translator",
         rating: 4.5,
         orders: 5400
     },
@@ -387,10 +467,71 @@ const aiAssistantProducts = [
         originalPrice: "$1017.52",
         img: "https://ae-pic-a1.aliexpress-media.com/kf/S630cb603d87745348670ca92289904eeW.jpg",
         url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4E94sG70nElEbTZJM6gR7n7eDDMU27kxaohzaB372HeSaZUYiY5w2xhlBT0EpBoB6vRF10BWUtTzVxdzrKkvCd6WYVmDkn8fXcN8iAJ9zuCFMvsaxS7UeyZb2Negb7hIgRkF2LcBCwS9RLBqR202HiYrDG5sJJvgocTSyWbzUD2i9er1dvu5yCNiurj7shrUAyOWnn6djI4dAiy0YOEKQOw42EnAGIbjdR0YhWjtRg0zmHwtElfZgShLTsJDhylYiKnTEilCQ4FBLFXVNywtOzZnVefXVqm5saOAXRU6TMWKlin7t5TG5souhxhgNflahoRGGPvHGO1Kxt6uHgSI3eYiC5SNgmMsmsz556oaLd0lHSdCQ5orw4nXjcp0R0un1ozD27UqPoVejLjSZ3tYdFO0Ry7P4TmIXRf4QQPANL03N7Fp2jQvTHqldD7WUMujpPStgvmCYqeORTYLFCniCXFLSap0IbWjMmd5FU2gundiFCO8FT0Pwzeiqwg17YQIjsIBuBibN20WUwgcqaamRz3QAKnzer2X6ep2i4icqvY0JtHbnanDQZcxvzTV1fGFn7pHiYlk0xThYAT2DHhVVCItZXbvI6I0aWwPZiQiwEItkdygnFIxK7CXVjfsPWxd2WdTFZBpQ4iJXxxGaU18PLkuQSkphUbnfJaeczf1HbVughYw4ZmRVyowShXVARgaEwBUpYkWgLlRKo",
+        category: "translator",
+        rating: 4.8,
+        orders: 11200
+    },
+    {
+        title: "Office Conference Assistant M76 Headphones",
+        description: "Auriculares con traductor en tiempo real, estudio, aprendizaje, Bluetooth",
+        price: "$29.09",
+        originalPrice: "$93.83",
+        img: "https://ae-pic-a1.aliexpress-media.com/kf/S4aeef1c972644eb29a7ff639742e6030L.jpg",
+        url: "https://s.click.aliexpress.com/s/NdpwztbAIgDMmxGbP8fFks7yUFfsHjzlImSYmA68h7xlMRgzueFsRgokQ9f9hcpVKttxtQE2VzIoqkXJXrpOr6uR3zv7mP4CDO9CddoFf4t0QE5DXPy8Pgjhz4irfQSEjEGUmy5yF3A5gJ9h3NYjLMgqIMqa3zcpq5E2BC3W5EbV40Dm9buQxWpZzw1lbX8Zm2kZtNIa4KyDieNjsH7IU6Yv8StELKVvT9r4eFAaXPGhwHsgaDqdNcmY116r3GC2YvsOopeiiZPhJrV0cwgOQDSkW93v7gVKDqPkXyZF1oSWa6wSAOeznMFVlVYRcZrj1WHyl8CJv4PFdMRjuosKDywmfnnpqpNRrQ8aJjQxsYVMwPclCh3ANJeOheNjBiBqYBwi4sDIg59IKpQhSklyxZPdi0bPqZ71sTilAROeRPR7nrhxQdajaphReczDXKwRZrfbNmeKkJZwSiFXQlBejxkDAYSLTajIiLcczOlj9LjBCeD19iHDRh4KzPBApbMusFAJ48OGX3mOW112519quioM0jt4RRj4OM7GtITZsxDp7lduk5rcKa6Dm2YycURaGPphgcs4fI52zY0bQ9oF49KKFGezjqxifbLliMmE9TZkO2jvThp73XFAie6P0UmHYUMMwK9QlleAvdpuzWmoo658AtUnCAKWYGDB8JYMNxRLnqIicohB0odV9DECvTTRKMP3oGPFd1jz0YMvPdK0ZzW73r7lXstHL7jwtQR1NvZtYdp5WDRRUM04vy3oVzZLSq8u1l8ANFEh051z738Xl8XKhJD5S88HF5FiLXuCQ363MW8h59bvc6iR8i18b4ss4lWA4d5qMOc8Zhm17RC9laJHLdlf7jafWMRY4gCEAEgOFbitkzgr9meFTYTziNUO0anEonyLzAj2Cv2trwFoNf8kbtmPQizGkEujRtfqD5ByxigKs2xWDBG4QMWnK7GJNmgBSlU9tR0IhvkecuUNLjYuO8ynkILrXlpBeYdOsqcaJ",
+        category: "headphones",
+        rating: 4.4,
+        orders: 3200
+    },
+    {
+        title: "140+ Language Translator Device",
+        description: "Traductor de voz instantáneo bidireccional en tiempo real, diseño de soporte magnético para teléfono",
+        price: "$183.95",
+        originalPrice: "$216.42",
+        img: "https://ae-pic-a1.aliexpress-media.com/kf/Sef25da085ed1469c8825e5e4afd0d46eD.jpeg",
+        url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4kxTNGo8nFzCaqUdKbK8gxZmTZjWfqeKPzSpZh1Q8rtU9bIDB3lkMmEj3vJD5et5V4HNWqQ1tr8GHTOomNfDvaSNdRcvxyaNKyvLqXQeugz2kCQjNswHZEQHA5SkhK9W4SBnErIbYqoALNajEqMYXDoWpZQrmgaxRg2qXb3duZnEkisJcZbViKWpxkwiAqKq9weq2gv6m91THYHdAV3oMKwHxHRlBokUx3irTNWKP6c5Re3x3jhaHYRmrYVxP7YO0emLvV9PdVttYBnn1yfjT2JWosvxWSBoXPtiIFoNfY0p2NntLUHLJhDQg6cx4gczrY2pICENUA4nzIvIHCyO1PzCaWEJXxocQ6COVMNucCsuOnqmK4VyO0MA8W5JleQM8g4TMr2m1sfJqoAnwCeQMjgla544zBzLU516fuOSsAbvIjByXiPR1XoaH5FSz0xpEqy8TTDjZxA5SIGrEiOf0EK9ki5zmcTmWClqEmu1qyAi21aiNbuvhTyyJrzHdINdGAb4fqcTASUI85fbRCujQf28tIFfNaVeRRg8I9NtsH1kXi7g8qrenEGPeOHNgkNi87nVgKK3HTk3Jp2gI5WW9PucBuo6IoFS2aMCCZxFVznXqpL9Wl95kYKMdRRR9lerYH85fCn4j0jk7ix37LxHA8yWV08mvDpCHnkGtIbeZoIdLZkIQGe5PQO5fJgX6MX4q15uNPbK8lD2y9",
+        category: "translator",
+        rating: 4.7,
+        orders: 15600
+    },
+    {
+        title: "Fast Shipping i105N Robot Lawn Mower",
+        description: "Cortacésped robótico sin cable perimetral 1/8 acre RTK+Vision, mapeo asistido por IA",
+        price: "$3628.1",
+        originalPrice: "$3628.1",
+        img: "https://ae-pic-a1.aliexpress-media.com/kf/Sc9f2a55f49d54f93a0e29ba1e2577d38o.jpg",
+        url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4nzcSonpVm1ZKUMhdkxxKU3sAeWJ1taDJVjrPJrAvSAtTX7WbreO7uhkaYz18NSwIsbxMQICClUxeRHcdE6T1WPslE6fzN3JCO5Edo3w6Gz6uFHF7lugECSu4MJV7ktrlaQbWPDULBuFHkt2ua3qtkWgsknxQFaBKpG0O1xk9MsUX2HkK1FYX4CghmISKyu4awfp7UcSqGpp2wtOjsIXq60Kgov0KOVw2thTRsw6igJQuBvtLAniraDaYYDafAbtEdwpBIZibQ5pYOkwHbrvcqhoRApFpQ6sDAxFgCZcfDTxSXL9uDllQGCsHbTaNAKKgf8jlNsbeEwMEDjeneoUGiCfJWTyhjoVJqN4Sp51ftMf07c9WBziSqK1p7bARYz8Kz1EqLKbM7rC3UxaWlgetzZLfQrHcMnFUIj2cRyn26cVJmCeRkt3XR6nnVV6Uj9i5fSumNk3tZ6vDNU2azfovYsPxi2u4oNRsTSFPCC4r9OfNAFJHLmYVAYgBnQKpdLzWszWpm5Pp5uMF9UmYgnspq9ebSt9UpKj078oqesk2bsghzo8rF3DXzwmZK6TA2vdWXB6EOcYlN5NMARsT2OxIwMpNSp1xIZ7D2GDK9X6O2r4OihKMZ7c8PgqVnz6xYkdwRGTqH7QCkAtH24Fd4ZWXRKroG9FczQ9ysaCR1LzmRxN7ATNuINY5zwtcXpug6fLq8Rt9TH9Aej1ny",
+        category: "robot",
+        rating: 4.6,
+        orders: 4800
+    },
+    {
+        title: "Smart Ai Voice Translator Device T18",
+        description: "Traducción en tiempo real 138 idiomas, traductores de fotos en línea y sin conexión",
+        price: "$81.78",
+        originalPrice: "$81.78",
+        img: "https://ae-pic-a1.aliexpress-media.com/kf/S5586097dd6c341528b7cb03986056ec3x.jpg",
+        url: "https://s.click.aliexpress.com/s/NdpwztbAIgDMmxGbP8fFks7yUFfsHjzlImSYmA68h7xlMRgzueFsRgokQ9f9hcpVKttxtQE2VzIoqkXJXrpOr6uR3zv7mP4CDO9CddoFf4t0QE5DXPy8Pgjhz4irfQSEjEGUmy5yF3A5gJ9h3NYjLMgqIMqa3zcpq5E2BC3W5EbV40Dm9buQxWpZzw1lbX8Zm2kZtNIa4KyDieNjsH7IU6Yv8StELKVvT9r4eFAaXPGhwHsgaDqdNcmY116r3GC2YvsOopeiiZPhJrV0cwgOQDSkW93v7gVKDqPkXyZF1oSWa6wSAOeznMFVlVZbPmzVXri2X3lGFfCIPwf3r4bQb7kaKnEGUx0LR9OdDe9KV1JPRacRlVH1PKPFWfBFoPTmCxVfaZJz1ErggSZW84Y7ckiQaH349hRDCJVn3l4W9b53SK5KZbhRdkpXhYbe1D19qw2rMexfREcCxWTnguLtzlBaKV1E5WPXm9Sk2lhxwTIdTnTWfx6t1v6Ab6iP20r5oymqvvEEDHHO0T8Y4Kg8xenHENwEmWEUBggeLjPRmRmyQFLg5PPfhftomqOlDoX6FMs5CaxPGrfTts3AWwq5jevF4VScqNMHYftp7WS3dCK7RsA1GeQdBCzaYFFF0BCI9UQfT1AYjHv3UipFZbGLlZIydJ27tY4NtgFn0Tz6SmrUBf27YMFO305kEK15CN74iXNMtnFZAnmyKdjQ4UHskc6uwlva9zcYu68sYB8mQe65E3tabYf6jB8XOrJCRlJEEII16rcjap3xXhgmgDccO4twjLHfQM7QYdZljJVgNi0zCQKh4ubemjqvox8O2FF9u0wF3NHO7HrsPvzfafqBNIdEpYjSSMe4MzQ17XEg6Ri6Hlc4iXbGN7mS31pciMmAVFUfDdll1LmN1kQDWxm7slih9OcrdA4sc8x1H2bQvbC8bf7N8qE79wa2w441MhTC9hlT5ypJhvkmms93kifcnXd1xTwBq0jb1t4IyGxPFREKB",
+        category: "translator",
+        rating: 4.5,
+        orders: 5400
+    },
+    {
+        title: "ChatGPT-4 AI Powered Mini Voice Note Recorder",
+        description: "Grabadora de notas de voz mini con traductor en tiempo real, carga de teléfono gratuita",
+        price: "$152.51",
+        originalPrice: "$167.59",
+        img: "https://ae-pic-a1.aliexpress-media.com/kf/S3e9aaa69ea9e42e4b48d92777cbd54608.jpg",
+        url: "https://s.click.aliexpress.com/s/pyFri10M6ltAv61YZY9TfrxiDaaFXRreuZWJMeLtD8jig1wPxn51K2eq59ds8iT5Wl5L3w5KJyrl7SjOO3B0oJ0Xjwnc7n8AQA7gf5qnT4sCyU05LNms9JvyWQNFHNKtzBcoBpSguMg3UBR1FOODkmGTloXosMhqhnKgzzuJPYPxewVvzupiAiKSJA5SK0iQRxmaQ7UPG0AP2HC7uLitVpvXIfjMl7RnsnN7B8FrGfP9TWP7emQeaXV90Bp9fLEiLeKHsRf9R2jgKD32Axm5na4bRJdkhGVyv3GcDgMjmYrrZWinWctR9gnPwA4kZvm8sSNTEqXi7deHgqYiStHZJ9ogOhSK5YBJXGPeN0AQVWmjkCjvJ5cd1erMTnaTLTuMM6AtDBbTqrJTv3eGOMDx1ONy1kgt9PHcMLSLQxubmqDzu21lzNgtKE8PAv3bk4MIg3rvSngYPJg238ixdCDATYwpfyIBsocImZgfR619JOh0o41bOCwPHoYnplLbfiqZy2C2cEiEhgZ0T5QwIeyx19D1xf164WFHmeu7mP70QoPhcLLiY9cF1P3Ii052wWimIieCMd7bddUm1WPpbMP4TbJtHXxLUj17cSPzcPzCTULZnJZMyP3caTKS7DzmMZPc0neRJCUeBAXtns3Y4alxGOrV4KGILBRVOt4iHXmUTKDBAU4lfWNfu8ajUFYRhdckUJdvAI7zlKAnFcUifgeWZ3vIdftbEvO8KMgCAveTs9j50aYawLDxvMfQyf4IwCOY6XBrRTj3aN4OMu6JEq2xvnXI0k7PqtI8izoplitjIWxne9qOyddLN3663PVRLLkdN1FuFmoflxuozz3tWp9ycd7RE4kbTKC61f0CGrGqodYb2TGWwp3VfXS7ZbvTMT0WAvnFdaIEiRrZHv9uSQOSyEYg5dxZaqRnBD6Gp4xyeKYnrebLrJhGsDcZyNM4hwfSYQDayBVSN71ImuDCgSbTBZv1ojhCiPphiOC2so6AlPpKrpyqrCXARnmmj12KuuDiMEzVZPLr",
+        category: "voice-recorder",
         rating: 4.8,
         orders: 11200
     }
 ];
+
+// Variables for pagination and filtering
+let currentPage = 1;
+const productsPerPage = 12;
+let filteredProducts = [...allAIProducts];
 
 /* Dark Mode */
 const body = document.body;
@@ -410,14 +551,66 @@ window.addEventListener("scroll", () => {
 });
 back.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
 
-/* Render AI Assistant Products */
+/* Filter and Search Functions */
+function filterProducts() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const priceFilter = document.getElementById('priceFilter').value;
+    
+    filteredProducts = allAIProducts.filter(product => {
+        // Search filter
+        const matchesSearch = product.title.toLowerCase().includes(searchTerm) || 
+                             product.description.toLowerCase().includes(searchTerm);
+        
+        // Price filter
+        let matchesPrice = true;
+        const price = parseFloat(product.price.replace('$', ''));
+        
+        if (priceFilter !== 'all') {
+            switch(priceFilter) {
+                case '0-50':
+                    matchesPrice = price <= 50;
+                    break;
+                case '50-100':
+                    matchesPrice = price > 50 && price <= 100;
+                    break;
+                case '100-200':
+                    matchesPrice = price > 100 && price <= 200;
+                    break;
+                case '200-500':
+                    matchesPrice = price > 200 && price <= 500;
+                    break;
+                case '500+':
+                    matchesPrice = price > 500;
+                    break;
+            }
+        }
+        
+        return matchesSearch && matchesPrice;
+    });
+    
+    currentPage = 1;
+    renderProducts();
+}
+
+/* Render AI Assistant Products with Pagination */
 function renderProducts() {
     const grid = document.getElementById("productsGrid");
+    const loadMoreBtn = document.getElementById("loadMore");
+    const resultsCount = document.getElementById("resultsCount");
     
-    // Clear loading
+    // Calculate products to show
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
+    const productsToShow = filteredProducts.slice(0, endIndex);
+    
+    // Update results count
+    resultsCount.textContent = `Mostrando ${productsToShow.length} de ${filteredProducts.length} productos`;
+    
+    // Clear grid
     grid.innerHTML = '';
     
-    aiAssistantProducts.forEach(product => {
+    // Show products
+    productsToShow.forEach(product => {
         const discount = product.originalPrice === product.price ? 0 : 
             Math.round((1 - parseFloat(product.price.replace('$', '')) / parseFloat(product.originalPrice.replace('$', ''))) * 100);
         
@@ -450,7 +643,24 @@ function renderProducts() {
                 </div>
             </div>`;
     });
+    
+    // Show/hide load more button
+    if (endIndex < filteredProducts.length) {
+        loadMoreBtn.style.display = 'block';
+    } else {
+        loadMoreBtn.style.display = 'none';
+    }
 }
+
+// Load more products
+document.getElementById('loadMore').addEventListener('click', () => {
+    currentPage++;
+    renderProducts();
+});
+
+// Search and filter events
+document.getElementById('searchInput').addEventListener('input', filterProducts);
+document.getElementById('priceFilter').addEventListener('change', filterProducts);
 
 // Initialize products when page loads
 document.addEventListener('DOMContentLoaded', renderProducts);
